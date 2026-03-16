@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>世界遺産クロスワード</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- タイトル削除 -->
+        <!-- <header>
+            <h1>世界遺産クロスワード</h1>
+        </header> -->
+
+        <main id="game-screen">
+            <div class="board-wrapper">
+                <div id="crossword-board" class="board"></div>
+            </div>
+
+            <div class="hints">
+                <div class="hint-section">
+                    <h3>ヨコのカギ</h3>
+                    <ul id="across-hints"></ul>
+                </div>
+                <div class="hint-section">
+                    <h3>タテのカギ</h3>
+                    <ul id="down-hints"></ul>
+                </div>
+            </div>
+            <button id="btn-show-editor" class="sub-button">問題を編集する（作成画面へ）</button>
+        </main>
+
+        <section id="editor-screen" class="hidden">
+            <h2>作成画面：問題と答えの入力</h2>
+            <p>※15x15の枠内に収まるように入力してください。現在のAI生成データが初期値として入っています。</p>
+            <div id="editor-container">
+                <textarea id="json-editor" style="width: 100%; height: 300px; font-family: monospace;"></textarea>
+            </div>
+            <div class="editor-buttons">
+                <button id="btn-save-data" class="primary-button">保存してゲームに戻る</button>
+                <button id="btn-back-game" class="sub-button">戻る</button>
+            </div>
+        </section>
+
+        <div id="result-overlay" class="overlay hidden">
+            <div id="result-message" class="message"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

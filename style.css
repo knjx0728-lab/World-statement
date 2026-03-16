@@ -1,0 +1,335 @@
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #2196F3;
+    --background-color: #87CEEB;
+    /* 空の色 */
+    --board-bg: rgba(255, 255, 255, 0.9);
+    --text-color: #333;
+    --cell-size: 45px;
+}
+
+body {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* 背景色（画像読み込み失敗時用） */
+    background-color: var(--background-color);
+    background-image: url('./anime_globe_background.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    /* 背景の白いモザイク（半透明）を削除 */
+    background: transparent;
+    box-sizing: border-box;
+    /* 枠線や影も不要なら削除しますが、とりあえず残します */
+    /* border-radius: 15px; */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    /* backdrop-filter: blur(5px); */
+}
+
+.board-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 20px 0;
+}
+
+header h1 {
+    text-align: center;
+    color: #333;
+    /* 黒文字に変更 */
+    margin-bottom: 20px;
+}
+
+.board {
+    display: grid;
+    gap: 0;
+    /* gap方式をやめる */
+    background-color: transparent;
+    /* 盤面自体は透明に */
+    padding: 0;
+    border-top: 1px solid #000;
+    /* 上と左の外枠 */
+    border-left: 1px solid #000;
+    border-radius: 2px;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background-color: #fff;
+    /* 半透明から不透明な白に変更 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    border-right: 1px solid #000;
+    /* 右と下の境界線を入れる */
+    border-bottom: 1px solid #000;
+}
+
+.cell.black {
+    background-color: #d3d3d3;
+    /* 半透明をやめ、完全に透けないライトグレーに設定 */
+}
+
+.cell input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 1.2rem;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    background: transparent;
+    padding: 0;
+    outline: none;
+    text-transform: uppercase;
+    /* 英字の場合 */
+    touch-action: manipulation;
+}
+
+.cell-number {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 0.7rem;
+    color: #000;
+    /* 数字の色を黒色に変更 */
+    line-height: 1;
+    pointer-events: none;
+}
+
+.hints {
+    background: rgba(255, 255, 255, 0.8);
+    /* ヒントは読みやすいように背景を残す */
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.hint-section h3 {
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    margin-top: 0;
+}
+
+.hint-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.hint-section li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+/* Overlay for Results */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.message {
+    font-size: 10rem;
+    font-weight: bold;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.message.correct {
+    color: #FF0000;
+    /* Red Circle */
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+.message.wrong {
+    color: #0000FF;
+    /* Blue X */
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    animation: shake 0.5s;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+    }
+
+    20% {
+        transform: translate(-3px, 0px) rotate(1deg);
+    }
+
+    30% {
+        transform: translate(3px, 2px) rotate(0deg);
+    }
+
+    40% {
+        transform: translate(1px, -1px) rotate(1deg);
+    }
+
+    50% {
+        transform: translate(-1px, 2px) rotate(-1deg);
+    }
+
+    60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+    }
+
+    70% {
+        transform: translate(3px, 1px) rotate(-1deg);
+    }
+
+    80% {
+        transform: translate(-1px, -1px) rotate(1deg);
+    }
+
+    90% {
+        transform: translate(1px, 2px) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(1px, -2px) rotate(-1deg);
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    :root {
+        --cell-size: 30px;
+    }
+
+    .game-container {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .message {
+        font-size: 8rem;
+    }
+}
+
+/* 作成画面（エディタ）用のスタイル */
+.hidden {
+    display: none !important;
+}
+
+#editor-screen {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 50;
+}
+
+#editor-screen h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+}
+
+#json-editor {
+    width: 100%;
+    min-height: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.primary-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s, background-color 0.2s;
+    touch-action: manipulation;
+}
+
+.primary-button:hover {
+    background-color: #45a049;
+}
+
+.primary-button:active {
+    transform: scale(0.95);
+}
+
+.sub-button {
+    background-color: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin: 10px 5px;
+    transition: background-color 0.2s;
+    touch-action: manipulation;
+}
+
+.sub-button:hover {
+    background-color: #95a5a6;
+}
+
+.editor-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
